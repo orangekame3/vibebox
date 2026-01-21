@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Python (uv)
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.python-version
+
+# Rust
+target/
+
+# Go
+bin/
+
+# Build outputs
+dist/
+build/
+out/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE & Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
