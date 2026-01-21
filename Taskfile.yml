@@ -1,6 +1,7 @@
 version: '3'
 
 vars:
+  CONSOLE_DIR: ./console
   TRANSLATOR_DIR: ./translator
   TIMER_DIR: ./timer
   PDF2MD_DIR: ./pdf2md
@@ -13,14 +14,48 @@ tasks:
       - task --list
 
   # ============================================================
+  # Console (Next.js) - Main Dashboard
+  # ============================================================
+
+  console:dev:
+    desc: Start console dev server (port 3000)
+    dir: '{{.CONSOLE_DIR}}'
+    cmds:
+      - npm run dev
+
+  console:build:
+    desc: Build console
+    dir: '{{.CONSOLE_DIR}}'
+    cmds:
+      - npm run build
+
+  console:start:
+    desc: Start console production server
+    dir: '{{.CONSOLE_DIR}}'
+    cmds:
+      - npm run start
+
+  console:lint:
+    desc: Lint console
+    dir: '{{.CONSOLE_DIR}}'
+    cmds:
+      - npm run lint
+
+  console:install:
+    desc: Install console dependencies
+    dir: '{{.CONSOLE_DIR}}'
+    cmds:
+      - npm install
+
+  # ============================================================
   # Translator (Next.js)
   # ============================================================
 
   translator:dev:
-    desc: Start translator dev server
+    desc: Start translator dev server (port 3001)
     dir: '{{.TRANSLATOR_DIR}}'
     cmds:
-      - npm run dev
+      - npm run dev -- -p 3001
 
   translator:build:
     desc: Build translator
@@ -51,10 +86,10 @@ tasks:
   # ============================================================
 
   timer:dev:
-    desc: Start timer dev server
+    desc: Start timer dev server (port 3002)
     dir: '{{.TIMER_DIR}}'
     cmds:
-      - npm run dev
+      - npm run dev -- -p 3002
 
   timer:build:
     desc: Build timer
@@ -97,10 +132,10 @@ tasks:
       - uv run python api.py
 
   pdf2md:ui:
-    desc: Start pdf2md UI dev server (port 3000)
+    desc: Start pdf2md UI dev server (port 3003)
     dir: '{{.PDF2MD_UI_DIR}}'
     cmds:
-      - npm run dev
+      - npm run dev -- -p 3003
 
   pdf2md:build:
     desc: Build pdf2md UI
@@ -139,6 +174,7 @@ tasks:
   install:
     desc: Install all dependencies
     cmds:
+      - task: console:install
       - task: translator:install
       - task: timer:install
       - task: pdf2md:install
@@ -146,6 +182,7 @@ tasks:
   build:
     desc: Build all apps
     cmds:
+      - task: console:build
       - task: translator:build
       - task: timer:build
       - task: pdf2md:build
@@ -153,6 +190,7 @@ tasks:
   lint:
     desc: Lint all apps
     cmds:
+      - task: console:lint
       - task: translator:lint
       - task: timer:lint
       - task: pdf2md:lint

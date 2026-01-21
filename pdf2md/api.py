@@ -16,7 +16,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
+    allow_origins=[
+        "http://localhost:3000",  # console
+        "http://localhost:3001",  # translator
+        "http://localhost:3002",  # timer
+        "http://localhost:3003",  # pdf2md-ui
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

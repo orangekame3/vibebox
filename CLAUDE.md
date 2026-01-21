@@ -125,6 +125,72 @@ This allows easy management with:
 - `task app-name:build` - Build the app
 - `task install` - Install all dependencies
 
+## Console Integration
+
+Vibebox has a central console (`./console`) that manages all applications. When creating a new app, integrate it with the console:
+
+### Port Assignments
+
+| App | Port |
+|-----|------|
+| console | 3000 |
+| translator | 3001 |
+| timer | 3002 |
+| pdf2md-ui | 3003 |
+| pdf2md-api | 8000 |
+
+**Always assign a unique port** to new apps and update this table.
+
+### Register in Console
+
+1. Add app config to `console/lib/app-registry.ts`:
+   ```typescript
+   {
+     id: "app-name",
+     name: "App Name",
+     description: "Description of the app",
+     port: 300X,  // Assign next available port
+     directory: "../app-name",
+     command: "npm",
+     args: ["run", "dev", "--", "-p", "300X"],
+     icon: "document",  // translate | clock | document | server
+     color: "#10b981",  // Unique color for the app
+   }
+   ```
+
+2. Add navigation link to `console/components/Sidebar.tsx`:
+   ```typescript
+   { href: "/apps/app-name", label: "App Name", icon: DocumentIcon },
+   ```
+
+3. Update Taskfile port in dev task:
+   ```yaml
+   app-name:dev:
+     desc: Start app-name dev server (port 300X)
+     cmds:
+       - npm run dev -- -p 300X
+   ```
+
+### CORS for Backend APIs
+
+If the new app has a backend API, add console's port to CORS origins:
+```python
+# Python (FastAPI)
+allow_origins=[
+    "http://localhost:3000",  # console
+    "http://localhost:300X",  # your app
+]
+```
+
+### Starting the Console
+
+```bash
+task console:dev    # Development mode
+task console:start  # Production mode (after build)
+```
+
+Access at http://localhost:3000 to manage all apps.
+
 ## Auto Debug Loop
 
 After making code changes, ALWAYS verify by running the appropriate check command and fix any errors automatically:
