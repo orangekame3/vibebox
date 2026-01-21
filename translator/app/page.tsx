@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 type TranslationDirection = "ja-en" | "en-ja";
 
@@ -42,6 +42,14 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [modifierKey, setModifierKey] = useState("Ctrl");
+
+  useEffect(() => {
+    // Detect Mac platform after mount to avoid hydration mismatch
+    if (navigator.userAgent.includes("Mac")) {
+      setModifierKey("⌘");
+    }
+  }, []);
 
   const handleTranslate = useCallback(async () => {
     if (!inputText.trim()) return;
@@ -202,10 +210,7 @@ export default function Home() {
                   <div className="flex items-center justify-between pt-4 border-t border-[var(--border)]">
                     <span className="text-xs text-[var(--text-subtle)]">
                       <kbd className="px-1.5 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[10px] font-mono">
-                        {typeof navigator !== "undefined" &&
-                        navigator.userAgent.includes("Mac")
-                          ? "⌘"
-                          : "Ctrl"}
+                        {modifierKey}
                       </kbd>{" "}
                       +{" "}
                       <kbd className="px-1.5 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[10px] font-mono">

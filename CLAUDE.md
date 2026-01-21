@@ -78,6 +78,53 @@ className="bg-[var(--surface)] text-[var(--foreground)]"
 - Invert appropriately (dark backgrounds, light text)
 - Maintain warmth in dark mode
 
+## Taskfile Integration
+
+When creating a new application in this repository, ALWAYS add corresponding tasks to `Taskfile.yml`:
+
+1. Add a variable for the app directory:
+   ```yaml
+   vars:
+     APP_NAME_DIR: ./app-name
+   ```
+
+2. Add a task section with standard commands:
+   ```yaml
+   # ============================================================
+   # App Name (Framework)
+   # ============================================================
+
+   app-name:dev:
+     desc: Start app-name dev server
+     dir: '{{.APP_NAME_DIR}}'
+     cmds:
+       - npm run dev  # or appropriate command
+
+   app-name:build:
+     desc: Build app-name
+     dir: '{{.APP_NAME_DIR}}'
+     cmds:
+       - npm run build
+
+   app-name:install:
+     desc: Install app-name dependencies
+     dir: '{{.APP_NAME_DIR}}'
+     cmds:
+       - npm install
+   ```
+
+3. Add to aggregated tasks (`install`, `build`, `lint`):
+   ```yaml
+   install:
+     cmds:
+       - task: app-name:install
+   ```
+
+This allows easy management with:
+- `task app-name:dev` - Start dev server
+- `task app-name:build` - Build the app
+- `task install` - Install all dependencies
+
 ## Auto Debug Loop
 
 After making code changes, ALWAYS verify by running the appropriate check command and fix any errors automatically:

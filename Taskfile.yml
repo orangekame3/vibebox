@@ -2,6 +2,7 @@ version: '3'
 
 vars:
   TRANSLATOR_DIR: ./translator
+  TIMER_DIR: ./timer
 
 tasks:
   default:
@@ -44,6 +45,40 @@ tasks:
       - npm install
 
   # ============================================================
+  # Timer (Next.js)
+  # ============================================================
+
+  timer:dev:
+    desc: Start timer dev server
+    dir: '{{.TIMER_DIR}}'
+    cmds:
+      - npm run dev
+
+  timer:build:
+    desc: Build timer
+    dir: '{{.TIMER_DIR}}'
+    cmds:
+      - npm run build
+
+  timer:start:
+    desc: Start timer production server
+    dir: '{{.TIMER_DIR}}'
+    cmds:
+      - npm run start
+
+  timer:lint:
+    desc: Lint timer
+    dir: '{{.TIMER_DIR}}'
+    cmds:
+      - npm run lint
+
+  timer:install:
+    desc: Install timer dependencies
+    dir: '{{.TIMER_DIR}}'
+    cmds:
+      - npm install
+
+  # ============================================================
   # All Apps
   # ============================================================
 
@@ -51,18 +86,16 @@ tasks:
     desc: Install all dependencies
     cmds:
       - task: translator:install
-
-  dev:
-    desc: Start all dev servers (currently only translator)
-    cmds:
-      - task: translator:dev
+      - task: timer:install
 
   build:
     desc: Build all apps
     cmds:
       - task: translator:build
+      - task: timer:build
 
   lint:
     desc: Lint all apps
     cmds:
       - task: translator:lint
+      - task: timer:lint
