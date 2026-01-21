@@ -3,6 +3,8 @@ version: '3'
 vars:
   TRANSLATOR_DIR: ./translator
   TIMER_DIR: ./timer
+  PDF2MD_DIR: ./pdf2md
+  PDF2MD_UI_DIR: ./pdf2md-ui
 
 tasks:
   default:
@@ -79,6 +81,58 @@ tasks:
       - npm install
 
   # ============================================================
+  # PDF2MD (Python API + Next.js UI)
+  # ============================================================
+
+  pdf2md:dev:
+    desc: Start pdf2md (API + UI together)
+    deps:
+      - pdf2md:api
+      - pdf2md:ui
+
+  pdf2md:api:
+    desc: Start pdf2md API server (port 8000)
+    dir: '{{.PDF2MD_DIR}}'
+    cmds:
+      - uv run python api.py
+
+  pdf2md:ui:
+    desc: Start pdf2md UI dev server (port 3000)
+    dir: '{{.PDF2MD_UI_DIR}}'
+    cmds:
+      - npm run dev
+
+  pdf2md:build:
+    desc: Build pdf2md UI
+    dir: '{{.PDF2MD_UI_DIR}}'
+    cmds:
+      - npm run build
+
+  pdf2md:install:
+    desc: Install pdf2md dependencies (API + UI)
+    cmds:
+      - task: pdf2md:install:api
+      - task: pdf2md:install:ui
+
+  pdf2md:install:api:
+    desc: Install pdf2md API dependencies
+    dir: '{{.PDF2MD_DIR}}'
+    cmds:
+      - uv sync
+
+  pdf2md:install:ui:
+    desc: Install pdf2md UI dependencies
+    dir: '{{.PDF2MD_UI_DIR}}'
+    cmds:
+      - npm install
+
+  pdf2md:lint:
+    desc: Lint pdf2md UI
+    dir: '{{.PDF2MD_UI_DIR}}'
+    cmds:
+      - npm run lint
+
+  # ============================================================
   # All Apps
   # ============================================================
 
@@ -87,15 +141,18 @@ tasks:
     cmds:
       - task: translator:install
       - task: timer:install
+      - task: pdf2md:install
 
   build:
     desc: Build all apps
     cmds:
       - task: translator:build
       - task: timer:build
+      - task: pdf2md:build
 
   lint:
     desc: Lint all apps
     cmds:
       - task: translator:lint
       - task: timer:lint
+      - task: pdf2md:lint
