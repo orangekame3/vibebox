@@ -1,0 +1,68 @@
+version: '3'
+
+vars:
+  TRANSLATOR_DIR: ./translator
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  # ============================================================
+  # Translator (Next.js)
+  # ============================================================
+
+  translator:dev:
+    desc: Start translator dev server
+    dir: '{{.TRANSLATOR_DIR}}'
+    cmds:
+      - npm run dev
+
+  translator:build:
+    desc: Build translator
+    dir: '{{.TRANSLATOR_DIR}}'
+    cmds:
+      - npm run build
+
+  translator:start:
+    desc: Start translator production server
+    dir: '{{.TRANSLATOR_DIR}}'
+    cmds:
+      - npm run start
+
+  translator:lint:
+    desc: Lint translator
+    dir: '{{.TRANSLATOR_DIR}}'
+    cmds:
+      - npm run lint
+
+  translator:install:
+    desc: Install translator dependencies
+    dir: '{{.TRANSLATOR_DIR}}'
+    cmds:
+      - npm install
+
+  # ============================================================
+  # All Apps
+  # ============================================================
+
+  install:
+    desc: Install all dependencies
+    cmds:
+      - task: translator:install
+
+  dev:
+    desc: Start all dev servers (currently only translator)
+    cmds:
+      - task: translator:dev
+
+  build:
+    desc: Build all apps
+    cmds:
+      - task: translator:build
+
+  lint:
+    desc: Lint all apps
+    cmds:
+      - task: translator:lint
