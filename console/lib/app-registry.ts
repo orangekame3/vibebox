@@ -63,7 +63,7 @@ export const apps: AppConfig[] = [
     directory: "../clock",
     command: "npm",
     args: ["run", "dev", "--", "-p", "3004"],
-    icon: "clock",
+    icon: "time",
     color: "#d97706",
   },
 ];
