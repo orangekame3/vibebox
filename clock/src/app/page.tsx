@@ -133,7 +133,13 @@ export default function ClockPage() {
 function KeyboardHandler({ onToggle }: { onToggle: () => void }) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "t" || e.key === "T") {
+      if (
+        (e.key === "t" || e.key === "T") &&
+        !e.ctrlKey &&
+        !e.altKey &&
+        !e.metaKey &&
+        !e.shiftKey
+      ) {
         onToggle();
       }
     };
