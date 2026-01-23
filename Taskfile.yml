@@ -4,6 +4,7 @@ vars:
   CONSOLE_DIR: ./console
   TRANSLATOR_DIR: ./translator
   TIMER_DIR: ./timer
+  CLOCK_DIR: ./clock
   PDF2MD_DIR: ./pdf2md
   PDF2MD_UI_DIR: ./pdf2md-ui
 
@@ -116,6 +117,40 @@ tasks:
       - npm install
 
   # ============================================================
+  # Clock (Next.js)
+  # ============================================================
+
+  clock:dev:
+    desc: Start clock dev server (port 3004)
+    dir: '{{.CLOCK_DIR}}'
+    cmds:
+      - npm run dev -- -p 3004
+
+  clock:build:
+    desc: Build clock
+    dir: '{{.CLOCK_DIR}}'
+    cmds:
+      - npm run build
+
+  clock:start:
+    desc: Start clock production server
+    dir: '{{.CLOCK_DIR}}'
+    cmds:
+      - npm run start
+
+  clock:lint:
+    desc: Lint clock
+    dir: '{{.CLOCK_DIR}}'
+    cmds:
+      - npm run lint
+
+  clock:install:
+    desc: Install clock dependencies
+    dir: '{{.CLOCK_DIR}}'
+    cmds:
+      - npm install
+
+  # ============================================================
   # PDF2MD (Python API + Next.js UI)
   # ============================================================
 
@@ -177,6 +212,7 @@ tasks:
       - task: console:install
       - task: translator:install
       - task: timer:install
+      - task: clock:install
       - task: pdf2md:install
 
   build:
@@ -185,6 +221,7 @@ tasks:
       - task: console:build
       - task: translator:build
       - task: timer:build
+      - task: clock:build
       - task: pdf2md:build
 
   lint:
@@ -193,4 +230,5 @@ tasks:
       - task: console:lint
       - task: translator:lint
       - task: timer:lint
+      - task: clock:lint
       - task: pdf2md:lint
