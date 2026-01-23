@@ -55,6 +55,17 @@ export const apps: AppConfig[] = [
     icon: "server",
     color: "#f59e0b",
   },
+  {
+    id: "clock",
+    name: "Clock",
+    description: "Minimal clock display with Japanese-inspired design",
+    port: 3004,
+    directory: "../clock",
+    command: "npm",
+    args: ["run", "dev", "--", "-p", "3004"],
+    icon: "clock",
+    color: "#d97706",
+  },
 ];
 
 export function getApp(id: string): AppConfig | undefined {
